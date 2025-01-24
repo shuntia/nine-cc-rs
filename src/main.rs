@@ -8,23 +8,12 @@ fn main() {
     println!("main:");
     let target = args[1][..].to_owned();
     let mut it = target.chars();
-    let mut buf = "".to_owned();
-    while let c = it.next() {
-        match c {
-            Some(ch) => match ch {
-                '+' => break,
-                '-' => break,
-                cha => buf.push(cha),
-            },
-            None => panic!("unexpected error while reading"),
-        }
-    }
-    println!("  mov rax, {}", buf);
+    println!("  mov rax, {}", parseint(&mut it).unwrap());
     while let Some(c) = it.next() {
         match c {
             '+' => println!("  add rax, {}", parseint(&mut it).unwrap()),
             '-' => println!("  sub rax, {}", parseint(&mut it).unwrap()),
-            _ => panic!("unexpected char"),
+            _ => panic!("unexpected char: {}", c),
         }
     }
     println!("  ret");
